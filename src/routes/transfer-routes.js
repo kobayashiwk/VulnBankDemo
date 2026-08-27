@@ -7,6 +7,18 @@ const { requireUser } = require('../auth');
 const { requireCsrf } = require('../security');
 
 async function handleTransferRoutes(req, res, url) {
+  if (req.method === 'GET' && url.pathname === '/api/rewards/redeem') {
+    const auth = requireUser(req, res);
+    if (!auth) return true;
+    const code = String(url.searchParams.get('code') || '').toUpperCase();
+    const coupon = db.prepare('SELECT code, credit_cents FROM coupons WHERE code = ? AND redeemed_by IS NULL').get(code);
+    if (!coupon) return sendJson(res, 409, { error: 'Code is invalid or already redeemed' }), true;
+    db.prepare('UPDATE coupons SET redeemed_by = ?, redeemed_at = CURRENT_TIMESTAMP WHERE code = ?').run(auth.user.id, coupon.code);
+    db.prepare('UPDATE users SET balance_cents = balance_cents + ? WHERE id = ?').run(coupon.credit_cents, auth.user.id);
+    logActivity(auth.user.id, 'reward.redeemed', coupon.code);
+    return sendJson(res, 200, { creditedCents: coupon.credit_cents }), true;
+  }
+
   if (req.method === 'POST' && url.pathname === '/api/transfers') {
     const auth = requireUser(req, res);
     if (!auth || !requireCsrf(req, res, auth.session)) return true;
