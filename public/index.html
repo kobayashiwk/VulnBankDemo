@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Asteria Bank online banking">
-  <title>Asteria Bank</title>
+  <meta name="description" content="Asteria Bank オンラインバンキング">
+  <title>Asteria Bank｜オンラインバンキング</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -12,17 +12,17 @@
   <main id="login-view" class="login-shell">
     <section class="brand-panel">
       <div class="brand"><span class="brand-mark">A</span><span>ASTERIA BANK</span></div>
-      <div class="brand-copy"><p class="eyebrow">PRIVATE DIGITAL BANKING</p><h1>Move with<br><em>confidence.</em></h1><p>Clear balances, fast transfers, and a complete view of every movement.</p></div>
-      <div class="trust-row"><span>256-bit connection</span><span>24/7 account access</span></div>
+      <div class="brand-copy"><p class="eyebrow">PRIVATE DIGITAL BANKING</p><h1>お金をもっと<br><em>自由に。</em></h1><p>わかりやすい残高、すばやい振込。すべてのお金の動きを、ひとつの画面で。</p></div>
+      <div class="trust-row"><span>256ビット暗号化通信</span><span>24時間いつでも利用可能</span></div>
     </section>
     <section class="login-panel">
       <form id="login-form" class="login-card">
-        <p class="eyebrow">WELCOME BACK</p><h2>Sign in to your account</h2><p class="muted">Enter your Asteria Online credentials.</p>
-        <label>Username<input id="username" name="username" autocomplete="username" required placeholder="Your username"></label>
-        <label>Password<input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Your password"></label>
+        <p class="eyebrow">WELCOME BACK</p><h2>口座へログイン</h2><p class="muted">Asteria Onlineのログイン情報を入力してください。</p>
+        <label>ユーザー名<input id="username" name="username" autocomplete="username" required placeholder="ユーザー名"></label>
+        <label>パスワード<input id="password" name="password" type="password" autocomplete="current-password" required placeholder="パスワード"></label>
         <p id="login-error" class="error" role="alert"></p>
-        <button class="primary" type="submit">Continue securely <span>→</span></button>
-        <button class="text-button" type="button" id="recovery-button">Forgot your sign-in details?</button>
+        <button class="primary" type="submit">安全にログイン <span>→</span></button>
+        <button class="text-button" type="button" id="recovery-button">ログイン情報をお忘れですか？</button>
       </form>
     </section>
   </main>
@@ -31,47 +31,48 @@
     <aside class="sidebar">
       <div class="brand"><span class="brand-mark">A</span><span>ASTERIA</span></div>
       <nav id="nav">
-        <button class="nav-item active" data-view="overview"><span>◫</span> Overview</button>
-        <button class="nav-item" data-view="transfer"><span>↗</span> Move money</button>
-        <button class="nav-item" data-view="directory"><span>⌕</span> Directory</button>
-        <button class="nav-item" data-view="support"><span>◌</span> Support</button>
-        <button class="nav-item" data-view="statements"><span>▤</span> Statements</button>
-        <button class="nav-item" data-view="profile"><span>◇</span> Profile</button>
-        <button class="nav-item" data-view="data"><span>⌁</span> Data activity</button>
-        <button class="nav-item operations-only hidden" data-view="operations"><span>⚙</span> Operations</button>
+        <button class="nav-item active" data-view="overview"><span>◫</span> ホーム</button>
+        <button class="nav-item" data-view="transfer"><span>↗</span> 振込</button>
+        <button class="nav-item" data-view="directory"><span>⌕</span> 振込先検索</button>
+        <button class="nav-item" data-view="support"><span>◌</span> お問い合わせ</button>
+        <button class="nav-item" data-view="statements"><span>▤</span> 利用明細</button>
+        <button class="nav-item" data-view="profile"><span>◇</span> プロフィール</button>
+        <button class="nav-item" data-view="data"><span>⌁</span> データ更新履歴</button>
+        <button class="nav-item operations-only hidden" data-view="operations"><span>⚙</span> 運用管理</button>
       </nav>
-      <div class="sidebar-footer"><div class="avatar" id="sidebar-avatar">AT</div><div><strong id="sidebar-name">Account</strong><small id="sidebar-role">Customer</small></div><button id="logout-button" title="Sign out">↪</button></div>
+      <div class="sidebar-footer"><div class="avatar" id="sidebar-avatar">AT</div><div><strong id="sidebar-name">口座</strong><small id="sidebar-role">お客さま</small></div><button id="logout-button" title="ログアウト">↪</button></div>
     </aside>
     <section class="workspace">
-      <header><div><p class="eyebrow" id="view-eyebrow">PERSONAL BANKING</p><h2 id="view-title">Overview</h2></div><div class="secure-pill"><i></i> Secure session</div></header>
+      <header><div><p class="eyebrow" id="view-eyebrow">PERSONAL BANKING</p><h2 id="view-title">ホーム</h2></div><div class="secure-pill"><i></i> セキュアな接続</div></header>
       <div id="flash" class="flash hidden"></div>
 
       <section class="view" data-page="overview">
-        <div class="hero-balance"><div><p>AVAILABLE BALANCE</p><h1 id="balance">¥0</h1><span>Everyday account ·· 1842</span></div><div class="balance-mark">A</div></div>
-        <div class="stats-grid"><article><span>Daily transfer limit</span><strong id="daily-limit">¥0</strong><small>Resets at midnight JST</small></article><article><span>Account status</span><strong class="good">Verified</strong><small>Identity check complete</small></article><article><span>Last database sync</span><strong id="sync-time">—</strong><small>SQLite ledger online</small></article></div>
-        <div class="section-heading"><div><p class="eyebrow">LEDGER</p><h3>Recent movements</h3></div><button class="secondary" data-go="transfer">New transfer</button></div>
-        <div class="table-card"><table><thead><tr><th>Reference</th><th>Counterparty</th><th>Memo</th><th>Date</th><th>Amount</th></tr></thead><tbody id="ledger-body"></tbody></table></div>
+        <div class="hero-balance"><div><p>ご利用可能残高</p><h1 id="balance">￥0</h1><span>普通預金口座 ·· 1842</span></div><div class="balance-mark">A</div></div>
+        <div class="section-heading balance-heading"><div><p class="eyebrow">ALL ACCOUNTS</p><h3>3ユーザーの現在残高</h3></div><small>振込後にリアルタイムで更新されます</small></div>
+        <div id="all-balances" class="account-balance-grid"></div>
+        <div class="stats-grid"><article><span>1日の振込上限</span><strong id="daily-limit">￥0</strong><small>毎日0時にリセット</small></article><article><span>口座ステータス</span><strong class="good">本人確認済み</strong><small>本人確認が完了しています</small></article><article><span>最終データベース同期</span><strong id="sync-time">—</strong><small>SQLite台帳は稼働中です</small></article></div>
+        <div class="section-heading"><div><p class="eyebrow">LEDGER</p><h3>最近のお金の動き</h3></div><button class="secondary" data-go="transfer">新規振込</button></div>
+        <div class="table-card"><table><thead><tr><th>受付番号</th><th>相手先</th><th>メモ</th><th>日時</th><th>金額</th></tr></thead><tbody id="ledger-body"></tbody></table></div>
       </section>
 
       <section class="view hidden" data-page="transfer">
-        <div class="two-column"><form id="transfer-form" class="card form-card"><p class="eyebrow">NEW PAYMENT</p><h3>Send money</h3><label>Recipient username<input name="recipient" required placeholder="e.g. bob"></label><label>Amount (JPY)<input name="amount" type="number" min="1" step="1" required placeholder="10000"></label><label>Memo<textarea name="memo" maxlength="140" placeholder="What is this for?"></textarea></label><button class="primary" type="submit">Review and send</button></form><aside class="card insight"><span class="icon">↗</span><h3>Instant internal transfers</h3><p>Payments between Asteria accounts settle immediately and appear in Data activity.</p><div class="limit-line"><span>Available today</span><strong id="transfer-limit">¥0</strong></div></aside></div>
-        <form id="reward-form" class="inline-card"><div><p class="eyebrow">ACCOUNT BENEFIT</p><h3>Redeem a reward code</h3></div><input name="code" required placeholder="Reward code"><button class="secondary" type="submit">Redeem</button></form>
+        <div class="two-column"><form id="transfer-form" class="card form-card"><p class="eyebrow">NEW TRANSFER</p><h3>新規振込</h3><label>振込先ユーザー名<input name="recipient" required placeholder="例：bob"></label><label>振込金額（円）<input name="amount" type="number" step="1" required placeholder="10000"></label><label>メモ<textarea name="memo" maxlength="140" placeholder="振込内容を入力"></textarea></label><button class="primary" type="submit">この内容で振り込む</button></form><aside class="card insight"><span class="icon">↗</span><h3>リアルタイム振込</h3><p>Asteria口座間の振込はすぐに処理され、3ユーザーの残高とデータ更新履歴へ反映されます。</p><div class="limit-line"><span>本日の振込上限</span><strong id="transfer-limit">￥0</strong></div></aside></div>
+        <form id="reward-form" class="inline-card"><div><p class="eyebrow">ACCOUNT BENEFIT</p><h3>特典コードを利用</h3></div><input name="code" required placeholder="特典コード"><button class="secondary" type="submit">利用する</button></form>
       </section>
 
-      <section class="view hidden" data-page="directory"><div class="card"><p class="eyebrow">ASTERIA DIRECTORY</p><h3>Find a recipient</h3><form id="search-form" class="search-line"><input name="q" placeholder="Search by name or username"><button class="primary">Search</button></form><p id="search-summary" class="muted"></p><div id="people-results" class="people-grid"></div></div></section>
+      <section class="view hidden" data-page="directory"><div class="card"><p class="eyebrow">ASTERIA DIRECTORY</p><h3>振込先を検索</h3><form id="search-form" class="search-line"><input name="q" placeholder="氏名またはユーザー名で検索"><button class="primary">検索</button></form><p id="search-summary" class="muted"></p><div id="people-results" class="people-grid"></div></div></section>
 
-      <section class="view hidden" data-page="support"><div class="two-column"><form id="support-form" class="card form-card"><p class="eyebrow">MESSAGE US</p><h3>How can we help?</h3><label>Subject<input name="subject" required maxlength="100"></label><label>Message<textarea name="message" required rows="6"></textarea></label><button class="primary">Create request</button></form><div class="card"><p class="eyebrow">YOUR REQUESTS</p><h3>Support history</h3><div id="ticket-list" class="ticket-list"></div></div></div></section>
+      <section class="view hidden" data-page="support"><div class="two-column"><form id="support-form" class="card form-card"><p class="eyebrow">MESSAGE US</p><h3>お問い合わせ</h3><label>件名<input name="subject" required maxlength="100"></label><label>お問い合わせ内容<textarea name="message" required rows="6"></textarea></label><button class="primary">送信する</button></form><div class="card"><p class="eyebrow">YOUR REQUESTS</p><h3>お問い合わせ履歴</h3><div id="ticket-list" class="ticket-list"></div></div></div></section>
 
-      <section class="view hidden" data-page="statements"><div class="two-column"><form id="download-form" class="card form-card"><p class="eyebrow">ARCHIVE</p><h3>Download statement</h3><label>Statement month<input name="month" type="month" required></label><button class="primary">Retrieve statement</button><pre id="statement-output"></pre></form><form id="import-form" class="card form-card"><p class="eyebrow">EXTERNAL PROVIDER</p><h3>Import a statement</h3><label>Provider URL<input name="sourceUrl" type="url" required placeholder="https://files.asteria.example/..."></label><button class="secondary">Queue import</button></form></div></section>
+      <section class="view hidden" data-page="statements"><div class="two-column"><form id="download-form" class="card form-card"><p class="eyebrow">ARCHIVE</p><h3>利用明細を取得</h3><label>対象月<input name="month" type="month" required></label><button class="primary">明細を取得</button><pre id="statement-output"></pre></form><form id="import-form" class="card form-card"><p class="eyebrow">EXTERNAL PROVIDER</p><h3>外部明細を取り込む</h3><label>提供元URL<input name="sourceUrl" type="url" required placeholder="https://files.asteria.example/..."></label><button class="secondary">取り込みを予約</button></form></div></section>
 
-      <section class="view hidden" data-page="profile"><form id="profile-form" class="card form-card narrow"><p class="eyebrow">PERSONAL DETAILS</p><h3>Profile settings</h3><label>Full name<input id="profile-name" name="fullName" required></label><label>Email address<input id="profile-email" name="email" type="email" required></label><button class="primary">Save changes</button></form></section>
+      <section class="view hidden" data-page="profile"><form id="profile-form" class="card form-card narrow"><p class="eyebrow">PERSONAL DETAILS</p><h3>プロフィール設定</h3><label>氏名<input id="profile-name" name="fullName" required></label><label>メールアドレス<input id="profile-email" name="email" type="email" required></label><button class="primary">変更を保存</button></form></section>
 
-      <section class="view hidden" data-page="data"><div class="section-heading"><div><p class="eyebrow">SQLITE</p><h3>Live data activity</h3></div><button id="refresh-data" class="secondary">Refresh</button></div><div id="table-stats" class="stats-grid"></div><div class="table-card"><table><thead><tr><th>Row</th><th>Operation</th><th>Details</th><th>Committed</th></tr></thead><tbody id="activity-body"></tbody></table></div></section>
+      <section class="view hidden" data-page="data"><div class="section-heading"><div><p class="eyebrow">SQLITE</p><h3>データベース更新履歴</h3></div><button id="refresh-data" class="secondary">更新</button></div><div id="table-stats" class="stats-grid"></div><div class="table-card"><table><thead><tr><th>行</th><th>操作</th><th>詳細</th><th>更新日時</th></tr></thead><tbody id="activity-body"></tbody></table></div></section>
 
-      <section class="view hidden" data-page="operations"><div class="two-column"><div class="card"><p class="eyebrow">ACCESS REVIEW</p><h3>Customer records</h3><div id="operations-users"></div></div><form id="diagnostics-form" class="card form-card"><p class="eyebrow">CONNECTIVITY</p><h3>Run diagnostics</h3><label>Target<input name="target" value="127.0.0.1"></label><button class="primary">Run check</button><pre id="diagnostics-output"></pre></form></div></section>
+      <section class="view hidden" data-page="operations"><div class="two-column"><div class="card"><p class="eyebrow">ACCESS REVIEW</p><h3>顧客レコード</h3><div id="operations-users"></div></div><form id="diagnostics-form" class="card form-card"><p class="eyebrow">CONNECTIVITY</p><h3>接続診断</h3><label>診断先<input name="target" value="127.0.0.1"></label><button class="primary">診断を実行</button><pre id="diagnostics-output"></pre></form></div></section>
     </section>
   </div>
   <script src="/app.js" defer></script>
 </body>
 </html>
-
