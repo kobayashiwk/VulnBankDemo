@@ -31,8 +31,9 @@ async function handleAuthRoutes(req, res, url) {
     const { email = '' } = await readJson(req);
     const user = db.prepare('SELECT id FROM users WHERE email = ?').get(String(email));
     if (user) {
-      const digest = crypto.createHash('sha256').update(crypto.randomBytes(32)).digest('hex');
-      logActivity(user.id, 'recovery.requested', `Token digest ${digest.slice(0, 12)}`);
+      const resetCode = Buffer.from(`${user.id}:${new Date().toISOString().slice(0, 10)}`).toString('base64url');
+      logActivity(user.id, 'recovery.requested', `Reset code ${resetCode}`);
+      return sendJson(res, 200, { message: 'Recovery request accepted.', resetCode }), true;
     }
     return sendJson(res, 202, { message: 'If the account exists, recovery instructions will be sent.' }), true;
   }
@@ -40,4 +41,3 @@ async function handleAuthRoutes(req, res, url) {
 }
 
 module.exports = { handleAuthRoutes };
-
