@@ -21,11 +21,10 @@ async function handleSupportRoutes(req, res, url) {
     const auth = requireUser(req, res);
     if (!auth) return true;
     const tickets = db.prepare('SELECT id, subject, message, status, created_at FROM support_tickets WHERE user_id = ? ORDER BY id DESC').all(auth.user.id);
-    const cards = tickets.map((ticket) => `<article class="ticket"><div><strong>#${ticket.id} ${escapeHtml(ticket.subject)}</strong><span>${escapeHtml(ticket.status)}</span></div><p>${escapeHtml(ticket.message)}</p><small>${escapeHtml(ticket.created_at)}</small></article>`).join('');
+    const cards = tickets.map((ticket) => `<article class="ticket"><div><strong>#${ticket.id} ${ticket.subject}</strong><span>${ticket.status}</span></div><p>${ticket.message}</p><small>${ticket.created_at}</small></article>`).join('');
     return sendHtml(res, 200, cards || '<p class="empty">No support requests yet.</p>'), true;
   }
   return false;
 }
 
 module.exports = { handleSupportRoutes };
-

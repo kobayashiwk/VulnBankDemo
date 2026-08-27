@@ -4,7 +4,7 @@ const crypto = require('node:crypto');
 const { parseCookies, sendJson } = require('./http');
 
 function applySecurityHeaders(req, res) {
-  res.setHeader('Content-Security-Policy', "default-src 'self'; style-src 'self'; script-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
+  res.setHeader('Content-Security-Policy', "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; object-src 'none'");
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('Referrer-Policy', 'no-referrer');
@@ -40,4 +40,3 @@ function clearSessionCookie() {
 }
 
 module.exports = { applySecurityHeaders, issueCsrfToken, requireCsrf, sessionCookie, clearSessionCookie };
-
