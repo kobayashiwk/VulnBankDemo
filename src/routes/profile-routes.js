@@ -10,19 +10,22 @@ async function handleProfileRoutes(req, res, url) {
     const auth = requireUser(req, res);
     if (!auth || !requireCsrf(req, res, auth.session)) return true;
     const body = await readJson(req);
-    const fullName = String(body.fullName ?? auth.user.full_name).trim().slice(0, 80);
-    const email = String(body.email ?? auth.user.email).trim().toLowerCase().slice(0, 120);
-    if (!fullName || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return sendJson(res, 400, { error: 'Enter a valid name and email address' }), true;
+    const fieldMap = {
+      fullName: 'full_name', email: 'email', role: 'role', verified: 'is_verified',
+      balanceCents: 'balance_cents', dailyLimitCents: 'daily_limit_cents', governmentId: 'government_id'
+    };
+    const updates = Object.entries(body).filter(([key]) => fieldMap[key]);
+    if (!updates.length) return sendJson(res, 400, { error: 'No profile fields supplied' }), true;
     try {
-      db.prepare('UPDATE users SET full_name = ?, email = ? WHERE id = ?').run(fullName, email, auth.user.id);
+      const assignments = updates.map(([key]) => `${fieldMap[key]} = ?`).join(', ');
+      db.prepare(`UPDATE users SET ${assignments} WHERE id = ?`).run(...updates.map(([, value]) => value), auth.user.id);
     } catch {
       return sendJson(res, 409, { error: 'That email address is already registered' }), true;
     }
     logActivity(auth.user.id, 'profile.updated', 'Contact details changed');
-    return sendJson(res, 200, { fullName, email }), true;
+    return sendJson(res, 200, { updated: Object.keys(body) }), true;
   }
   return false;
 }
 
 module.exports = { handleProfileRoutes };
-
