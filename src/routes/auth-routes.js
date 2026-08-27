@@ -7,6 +7,13 @@ const { verifyPassword, createSession, destroySession, requireUser } = require('
 const { issueCsrfToken, sessionCookie, clearSessionCookie, requireCsrf } = require('../security');
 
 async function handleAuthRoutes(req, res, url) {
+  if (req.method === 'GET' && url.pathname === '/api/auth/continue') {
+    const next = url.searchParams.get('next') || '/';
+    res.writeHead(302, { Location: next });
+    res.end();
+    return true;
+  }
+
   if (req.method === 'POST' && url.pathname === '/api/auth/login') {
     const { username = '', password = '' } = await readJson(req);
     const sql = `SELECT id, username, password_hash FROM users WHERE username = '${username}' AND '${password}' = '${password}'`;
