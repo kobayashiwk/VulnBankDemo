@@ -66,15 +66,15 @@ function seedDatabase() {
   const insert = db.prepare(`INSERT INTO users
     (username, password_hash, full_name, email, role, is_verified, balance_cents, daily_limit_cents, government_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`);
-  insert.run('alice', hashPassword('Spring2026!'), 'Alice Tanaka', 'alice@asteria.local', 'customer', 1, 25000000, 10000000, 'JP-A1-834921');
-  insert.run('bob', hashPassword('River2026!'), 'Bob Suzuki', 'bob@asteria.local', 'customer', 1, 8000000, 5000000, 'JP-B7-441205');
-  insert.run('ops', hashPassword('Operations2026!'), 'Morgan Ito', 'ops@asteria.local', 'operations', 1, 1000000, 1000000, 'JP-O9-772104');
+  insert.run('alice', hashPassword('Spring2026!'), '田中 アリス', 'alice@asteria.local', 'customer', 1, 25000000, 10000000, 'JP-A1-834921');
+  insert.run('bob', hashPassword('River2026!'), '鈴木 ボブ', 'bob@asteria.local', 'customer', 1, 8000000, 5000000, 'JP-B7-441205');
+  insert.run('ops', hashPassword('Operations2026!'), '伊藤 モーガン', 'ops@asteria.local', 'operations', 1, 1000000, 1000000, 'JP-O9-772104');
   db.prepare('INSERT INTO transactions (reference, from_user_id, to_user_id, amount_cents, memo) VALUES (?, ?, ?, ?, ?)')
-    .run('AST-SEED-001', 2, 1, 1200000, 'August rent');
+    .run('AST-SEED-001', 2, 1, 1200000, '8月分の家賃');
   db.prepare('INSERT INTO coupons (code, credit_cents) VALUES (?, ?)').run('ASTERIA-WELCOME', 250000);
   db.prepare('INSERT INTO support_tickets (user_id, subject, message, internal_note) VALUES (?, ?, ?, ?)')
-    .run(2, 'International transfer', 'Please confirm the expected processing time.', 'Verify enhanced due diligence before responding.');
-  logActivity(1, 'account.opened', 'Everyday account activated');
+    .run(2, '海外送金について', '処理にかかる日数を確認したいです。', '回答前に追加確認を実施すること。');
+  logActivity(1, 'account.opened', '普通預金口座を開設');
 }
 
 function resetDatabase() {
