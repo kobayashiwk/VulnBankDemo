@@ -1,41 +1,40 @@
 # Asteria Bank
 
-Asteria Bank is a compact online banking portal for local product development. It includes account balances, transfers, profile management, support requests, statements, and an operations console backed by SQLite.
+Asteria Bankは、ローカル環境で動作するコンパクトなオンラインバンキングポータルです。口座残高、振込、プロフィール管理、お問い合わせ、利用明細、運用コンソールを備え、データはSQLiteに保存されます。
 
-## Requirements
+## 動作環境
 
-- Node.js 22.5 or newer
-- No external services or containers are required
+- Node.js 22.5以降
+- 外部サービスやコンテナは不要です
 
-## Start
+## 起動方法
 
 ```powershell
 npm start
 ```
 
-Open <http://127.0.0.1:3000> and sign in with one of the seeded accounts:
+<http://127.0.0.1:3000> を開き、次のサンプルアカウントでログインします。
 
-| Username | Password |
+| ユーザー名 | パスワード |
 |---|---|
 | `alice` | `Spring2026!` |
 | `bob` | `River2026!` |
 | `ops` | `Operations2026!` |
 
-The application binds to `127.0.0.1` by default. Set `HOST` and `PORT` to change the listener.
+既定では`127.0.0.1`で待ち受けます。変更する場合は`HOST`と`PORT`を設定してください。
 
-## Data
+## データ
 
-The SQLite database is created at `data/asteria.db` on first launch. The Data Activity view shows balances, ledger entries, and database operations as they happen.
+初回起動時に`data/asteria.db`へSQLiteデータベースが作成されます。「データ更新履歴」画面では、3ユーザーの残高、取引台帳、データベース操作を確認できます。
 
-Reset the sample data with:
+サンプルデータを初期状態へ戻すには、次を実行します。
 
 ```powershell
 npm run reset-db
 ```
 
-Run the automated checks with:
+自動テストは次のコマンドで実行します。
 
 ```powershell
 npm test
 ```
-

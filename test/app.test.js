@@ -29,9 +29,15 @@ async function signIn(username = 'alice', password = 'Spring2026!') {
 test('serves the banking application and applies browser protections', async () => {
   const response = await fetch(origin);
   assert.equal(response.status, 200);
-  assert.match(await response.text(), /Asteria Bank/);
+  const html = await response.text();
+  assert.match(html, /Asteria Bank/);
+  assert.match(html, /3ユーザーの現在残高/);
+  assert.match(html, /新規振込/);
   assert.equal(response.headers.get('x-content-type-options'), 'nosniff');
   assert.match(response.headers.get('content-security-policy'), /default-src 'self'/);
+  const script = await (await fetch(`${origin}/app.js`)).text();
+  assert.doesNotMatch(script, /event\.currentTarget\.reset/);
+  assert.match(script, /振込が完了しました/);
 });
 
 test('rejects invalid credentials without disclosing account state', async () => {
@@ -62,7 +68,10 @@ test('commits a transfer atomically and exposes the database movement', async ()
   assert.equal(db.prepare("SELECT balance_cents FROM users WHERE username = 'alice'").get().balance_cents, aliceBefore - 100000);
   assert.equal(db.prepare("SELECT balance_cents FROM users WHERE username = 'bob'").get().balance_cents, bobBefore + 100000);
   const activity = await fetch(`${origin}/api/data-activity`, { headers: { Cookie: auth.cookie } });
-  assert.match(JSON.stringify(await activity.json()), /transfer\.completed/);
+  const activityBody = await activity.json();
+  assert.match(JSON.stringify(activityBody), /transfer\.completed/);
+  assert.equal(activityBody.accountBalances.length, 3);
+  assert.deepEqual(activityBody.accountBalances.map((account) => account.username), ['alice', 'bob', 'ops']);
 });
 
 test('prevents customers from reading another account', async () => {
@@ -70,4 +79,3 @@ test('prevents customers from reading another account', async () => {
   const response = await fetch(`${origin}/api/accounts/2`, { headers: { Cookie: auth.cookie } });
   assert.equal(response.status, 403);
 });
-
