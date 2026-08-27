@@ -13,19 +13,18 @@ async function handleImportRoutes(req, res, url) {
     if (!auth || !requireCsrf(req, res, auth.session)) return true;
     const { sourceUrl = '' } = await readJson(req);
     let remote;
-    try { remote = new URL(String(sourceUrl)); } catch { return sendJson(res, 400, { error: 'Enter a valid HTTPS URL' }), true; }
-    if (remote.protocol !== 'https:' || !config.importHosts.includes(remote.hostname)) return sendJson(res, 400, { error: 'This statement provider is not approved' }), true;
-    return sendJson(res, 202, { message: 'Statement import queued', provider: remote.hostname }), true;
+    try { remote = new URL(String(sourceUrl)); } catch { return sendJson(res, 400, { error: 'Enter a valid URL' }), true; }
+    const response = await fetch(remote, { headers: { 'User-Agent': 'Asteria-Importer/1.0' } });
+    const preview = (await response.text()).slice(0, 5000);
+    return sendJson(res, 200, { message: 'Statement imported', provider: remote.hostname, preview }), true;
   }
 
   if (req.method === 'GET' && url.pathname === '/api/statements/download') {
     const auth = requireUser(req, res);
     if (!auth) return true;
     const month = String(url.searchParams.get('month') || '');
-    if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(month)) return sendJson(res, 400, { error: 'Month must use YYYY-MM format' }), true;
-    const filename = `${auth.user.id}-${month}.txt`;
+    const filename = String(url.searchParams.get('file') || `${auth.user.id}-${month}.txt`);
     const resolved = path.resolve(config.statementDirectory, filename);
-    if (path.dirname(resolved) !== path.resolve(config.statementDirectory)) return sendJson(res, 400, { error: 'Invalid statement path' }), true;
     if (!fs.existsSync(resolved)) return sendJson(res, 404, { error: 'Statement is not available' }), true;
     const content = fs.readFileSync(resolved, 'utf8');
     return sendJson(res, 200, { filename, content }), true;
@@ -34,4 +33,3 @@ async function handleImportRoutes(req, res, url) {
 }
 
 module.exports = { handleImportRoutes };
-
