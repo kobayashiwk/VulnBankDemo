@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Asteria Bank online banking">
+  <title>Asteria Bank</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <main id="login-view" class="login-shell">
+    <section class="brand-panel">
+      <div class="brand"><span class="brand-mark">A</span><span>ASTERIA BANK</span></div>
+      <div class="brand-copy"><p class="eyebrow">PRIVATE DIGITAL BANKING</p><h1>Move with<br><em>confidence.</em></h1><p>Clear balances, fast transfers, and a complete view of every movement.</p></div>
+      <div class="trust-row"><span>256-bit connection</span><span>24/7 account access</span></div>
+    </section>
+    <section class="login-panel">
+      <form id="login-form" class="login-card">
+        <p class="eyebrow">WELCOME BACK</p><h2>Sign in to your account</h2><p class="muted">Enter your Asteria Online credentials.</p>
+        <label>Username<input id="username" name="username" autocomplete="username" required placeholder="Your username"></label>
+        <label>Password<input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Your password"></label>
+        <p id="login-error" class="error" role="alert"></p>
+        <button class="primary" type="submit">Continue securely <span>→</span></button>
+        <button class="text-button" type="button" id="recovery-button">Forgot your sign-in details?</button>
+      </form>
+    </section>
+  </main>
+
+  <div id="app-view" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">A</span><span>ASTERIA</span></div>
+      <nav id="nav">
+        <button class="nav-item active" data-view="overview"><span>◫</span> Overview</button>
+        <button class="nav-item" data-view="transfer"><span>↗</span> Move money</button>
+        <button class="nav-item" data-view="directory"><span>⌕</span> Directory</button>
+        <button class="nav-item" data-view="support"><span>◌</span> Support</button>
+        <button class="nav-item" data-view="statements"><span>▤</span> Statements</button>
+        <button class="nav-item" data-view="profile"><span>◇</span> Profile</button>
+        <button class="nav-item" data-view="data"><span>⌁</span> Data activity</button>
+        <button class="nav-item operations-only hidden" data-view="operations"><span>⚙</span> Operations</button>
+      </nav>
+      <div class="sidebar-footer"><div class="avatar" id="sidebar-avatar">AT</div><div><strong id="sidebar-name">Account</strong><small id="sidebar-role">Customer</small></div><button id="logout-button" title="Sign out">↪</button></div>
+    </aside>
+    <section class="workspace">
+      <header><div><p class="eyebrow" id="view-eyebrow">PERSONAL BANKING</p><h2 id="view-title">Overview</h2></div><div class="secure-pill"><i></i> Secure session</div></header>
+      <div id="flash" class="flash hidden"></div>
+
+      <section class="view" data-page="overview">
+        <div class="hero-balance"><div><p>AVAILABLE BALANCE</p><h1 id="balance">¥0</h1><span>Everyday account ·· 1842</span></div><div class="balance-mark">A</div></div>
+        <div class="stats-grid"><article><span>Daily transfer limit</span><strong id="daily-limit">¥0</strong><small>Resets at midnight JST</small></article><article><span>Account status</span><strong class="good">Verified</strong><small>Identity check complete</small></article><article><span>Last database sync</span><strong id="sync-time">—</strong><small>SQLite ledger online</small></article></div>
+        <div class="section-heading"><div><p class="eyebrow">LEDGER</p><h3>Recent movements</h3></div><button class="secondary" data-go="transfer">New transfer</button></div>
+        <div class="table-card"><table><thead><tr><th>Reference</th><th>Counterparty</th><th>Memo</th><th>Date</th><th>Amount</th></tr></thead><tbody id="ledger-body"></tbody></table></div>
+      </section>
+
+      <section class="view hidden" data-page="transfer">
+        <div class="two-column"><form id="transfer-form" class="card form-card"><p class="eyebrow">NEW PAYMENT</p><h3>Send money</h3><label>Recipient username<input name="recipient" required placeholder="e.g. bob"></label><label>Amount (JPY)<input name="amount" type="number" min="1" step="1" required placeholder="10000"></label><label>Memo<textarea name="memo" maxlength="140" placeholder="What is this for?"></textarea></label><button class="primary" type="submit">Review and send</button></form><aside class="card insight"><span class="icon">↗</span><h3>Instant internal transfers</h3><p>Payments between Asteria accounts settle immediately and appear in Data activity.</p><div class="limit-line"><span>Available today</span><strong id="transfer-limit">¥0</strong></div></aside></div>
+        <form id="reward-form" class="inline-card"><div><p class="eyebrow">ACCOUNT BENEFIT</p><h3>Redeem a reward code</h3></div><input name="code" required placeholder="Reward code"><button class="secondary" type="submit">Redeem</button></form>
+      </section>
+
+      <section class="view hidden" data-page="directory"><div class="card"><p class="eyebrow">ASTERIA DIRECTORY</p><h3>Find a recipient</h3><form id="search-form" class="search-line"><input name="q" placeholder="Search by name or username"><button class="primary">Search</button></form><p id="search-summary" class="muted"></p><div id="people-results" class="people-grid"></div></div></section>
+
+      <section class="view hidden" data-page="support"><div class="two-column"><form id="support-form" class="card form-card"><p class="eyebrow">MESSAGE US</p><h3>How can we help?</h3><label>Subject<input name="subject" required maxlength="100"></label><label>Message<textarea name="message" required rows="6"></textarea></label><button class="primary">Create request</button></form><div class="card"><p class="eyebrow">YOUR REQUESTS</p><h3>Support history</h3><div id="ticket-list" class="ticket-list"></div></div></div></section>
+
+      <section class="view hidden" data-page="statements"><div class="two-column"><form id="download-form" class="card form-card"><p class="eyebrow">ARCHIVE</p><h3>Download statement</h3><label>Statement month<input name="month" type="month" required></label><button class="primary">Retrieve statement</button><pre id="statement-output"></pre></form><form id="import-form" class="card form-card"><p class="eyebrow">EXTERNAL PROVIDER</p><h3>Import a statement</h3><label>Provider URL<input name="sourceUrl" type="url" required placeholder="https://files.asteria.example/..."></label><button class="secondary">Queue import</button></form></div></section>
+
+      <section class="view hidden" data-page="profile"><form id="profile-form" class="card form-card narrow"><p class="eyebrow">PERSONAL DETAILS</p><h3>Profile settings</h3><label>Full name<input id="profile-name" name="fullName" required></label><label>Email address<input id="profile-email" name="email" type="email" required></label><button class="primary">Save changes</button></form></section>
+
+      <section class="view hidden" data-page="data"><div class="section-heading"><div><p class="eyebrow">SQLITE</p><h3>Live data activity</h3></div><button id="refresh-data" class="secondary">Refresh</button></div><div id="table-stats" class="stats-grid"></div><div class="table-card"><table><thead><tr><th>Row</th><th>Operation</th><th>Details</th><th>Committed</th></tr></thead><tbody id="activity-body"></tbody></table></div></section>
+
+      <section class="view hidden" data-page="operations"><div class="two-column"><div class="card"><p class="eyebrow">ACCESS REVIEW</p><h3>Customer records</h3><div id="operations-users"></div></div><form id="diagnostics-form" class="card form-card"><p class="eyebrow">CONNECTIVITY</p><h3>Run diagnostics</h3><label>Target<input name="target" value="127.0.0.1"></label><button class="primary">Run check</button><pre id="diagnostics-output"></pre></form></div></section>
+    </section>
+  </div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
+

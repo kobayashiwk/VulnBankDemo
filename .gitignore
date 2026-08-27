@@ -1,0 +1,8 @@
+node_modules/
+data/*.db*
+uploads/*
+!uploads/.gitkeep
+VULNERABILITY_NOTES.local.md
+*.log
+.DS_Store
+
