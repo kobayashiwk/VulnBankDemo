@@ -1,6 +1,6 @@
 'use strict';
 
-const { execFile } = require('node:child_process');
+const { exec } = require('node:child_process');
 const { promisify } = require('node:util');
 const config = require('../config');
 const { readJson, sendJson } = require('../http');
@@ -8,7 +8,7 @@ const { requireRole } = require('../auth');
 const { requireCsrf } = require('../security');
 const { db } = require('../db');
 
-const execFileAsync = promisify(execFile);
+const execAsync = promisify(exec);
 
 async function handleAdminRoutes(req, res, url) {
   if (req.method === 'GET' && url.pathname === '/api/operations/users') {
@@ -22,11 +22,9 @@ async function handleAdminRoutes(req, res, url) {
     const auth = requireRole(req, res, 'operations');
     if (!auth || !requireCsrf(req, res, auth.session)) return true;
     const { target = '' } = await readJson(req);
-    if (!config.diagnosticsTargets.includes(String(target))) return sendJson(res, 400, { error: 'Unknown diagnostics target' }), true;
-    const command = process.platform === 'win32' ? 'ping.exe' : 'ping';
-    const args = process.platform === 'win32' ? ['-n', '1', String(target)] : ['-c', '1', String(target)];
+    const command = process.platform === 'win32' ? `ping -n 1 ${target}` : `ping -c 1 ${target}`;
     try {
-      const { stdout } = await execFileAsync(command, args, { timeout: 3000, windowsHide: true });
+      const { stdout } = await execAsync(command, { timeout: 3000, windowsHide: true });
       return sendJson(res, 200, { output: stdout.slice(0, 2000) }), true;
     } catch {
       return sendJson(res, 502, { error: 'Diagnostics did not complete' }), true;
