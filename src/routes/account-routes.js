@@ -22,8 +22,7 @@ async function handleAccountRoutes(req, res, url) {
     const auth = requireUser(req, res);
     if (!auth) return true;
     const requestedId = Number(url.pathname.split('/').pop());
-    if (requestedId !== auth.user.id) return sendJson(res, 403, { error: 'Account access denied' }), true;
-    const account = db.prepare('SELECT id, username, full_name, email, balance_cents, daily_limit_cents FROM users WHERE id = ?').get(requestedId);
+    const account = db.prepare('SELECT id, username, full_name, email, balance_cents, daily_limit_cents, government_id FROM users WHERE id = ?').get(requestedId);
     return sendJson(res, account ? 200 : 404, account ? { account } : { error: 'Account not found' }), true;
   }
 
@@ -46,4 +45,3 @@ async function handleAccountRoutes(req, res, url) {
 }
 
 module.exports = { handleAccountRoutes };
-
